@@ -10,6 +10,9 @@ const CaseForm = () => {
     email: '',
     requestUrl: ''
   });
+  const [loading, setLoading] = useState(false);
+  const [success, setSuccess] = useState(false);
+  const [error, setError] = useState(null);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -18,30 +21,61 @@ const CaseForm = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const res = await fetch('/api/cases', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(formData)
-    });
+    setLoading(true);
+    setError(null);
+    setSuccess(false);
 
-    if (res.ok) {
-      alert('Case added successfully!');
-      setFormData({
-        userId: '',
-        fullName: '',
-        email: '',
-        requestUrl: ''
+    try {
+      // Send email with form data
+      const emailRes = await fetch('/api/send-email', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          to: 'project001.cr@gmail.com', // Replace with the recipient's email
+          subject: 'New Case Submitted',
+          text: `A new case has been submitted:\n\nUser ID: ${formData.userId}\nFull Name: ${formData.fullName}\nEmail: ${formData.email}\nRequest URL: ${formData.requestUrl}`
+        })
       });
-    } else {
-      alert('Failed to add case');
+
+      if (!emailRes.ok) {
+        throw new Error('Failed to send email');
+      }
+
+      // Submit case to the database
+      const res = await fetch('/api/cases', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(formData)
+      });
+
+      if (res.ok) {
+        setSuccess(true);
+        setFormData({
+          userId: '',
+          fullName: '',
+          email: '',
+          requestUrl: ''
+        });
+      } else {
+        const errorData = await res.json();
+        setError(errorData.error || 'Failed to submit case');
+      }
+    } catch (err) {
+      setError(err.message || 'Failed to submit case');
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
     <div className={styles.container}>
       <h1 className={styles.title}>Add a New Case</h1>
+      {error && <p className={styles.error}>{error}</p>}
+      {success && <p className={styles.success}>Case submitted and email sent successfully!</p>}
       <form onSubmit={handleSubmit} className={styles.form}>
         <div>
           <label className={styles.label}>User ID:</label>
@@ -87,7 +121,9 @@ const CaseForm = () => {
             className={styles.input}
           />
         </div>
-        <button type="submit" className={styles.button}>Submit</button>
+        <button type="submit" className={styles.button} disabled={loading}>
+          {loading ? 'Submitting...' : 'Submit'}
+        </button>
       </form>
     </div>
   );
