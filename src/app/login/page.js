@@ -32,7 +32,7 @@ const Login = () => {
 
       if (res.ok) {
         localStorage.setItem('token', data.token);
-        router.push('/add-case');
+        router.push('/control-panel');
       } else {
         setError(data.message);
       }
@@ -71,7 +71,7 @@ const Login = () => {
           </div>
           <button type="submit" className={styles.button}>Login</button>
         </form>
-        <p className={styles.link}>Don&#39t have an account? <a href="/signup">Signup</a></p>
+        <p className={styles.link}>Dont have an account? <a href="/signup">Signup</a></p>
       </div>
     </div>
   );

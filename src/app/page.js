@@ -1,3 +1,4 @@
+/*
 import Image from "next/image";
 import styles from "./page.module.css";
 
@@ -91,5 +92,47 @@ export default function Home() {
         </a>
       </div>
     </main>
+  );
+}
+*/
+import styles from './styles/Landing.module.css';
+import Head from 'next/head';
+
+export default function Home() {
+  return (
+    <div className={styles.container}>
+      <Head>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" />
+      </Head>
+      <header className={styles.header}>
+        <h1 className={styles.logo}>DoldAdress.se</h1>
+        <nav className={styles.nav}>
+          <a href="/login" className={`${styles.navLink} ${styles.bold}`}>Log In</a>
+          <a href="/signup" className={styles.navButton}>Get Started</a>
+        </nav>
+      </header>
+
+      <main className={styles.main}>
+        <section className={styles.hero}>
+          <div className={styles.heroContent}>
+            <h2>Hide Your Personal Information</h2>
+            <p>Sweden faces new security challenges. We help you hide certain personal information online and protect your digital integrity.</p>
+            <ul>
+              <li>Hide from information sites</li>
+              <li>Monitoring and address alerts</li>
+              <li>We remove you from Google</li>
+            </ul>
+            <button className={styles.primaryButton}>Hide Your Information</button>
+          </div>
+          <div className={styles.heroImage}>
+            <img src="/hero.jpg" alt="Hero Image" />
+          </div>
+        </section>
+      </main>
+
+      <footer className={styles.footer}>
+        <p>© 2024 DoldAdress.se. All rights reserved.</p>
+      </footer>
+    </div>
   );
 }
