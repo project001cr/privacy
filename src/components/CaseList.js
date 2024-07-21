@@ -5,6 +5,7 @@ import styles from './CaseList.module.css';
 
 const CaseList = () => {
   const [cases, setCases] = useState([]);
+  const [searchQuery, setSearchQuery] = useState("");
   const [error, setError] = useState(null);
 
   useEffect(() => {
@@ -26,6 +27,12 @@ const CaseList = () => {
     fetchCases();
   }, []);
 
+  const filteredCases = cases.filter(caseItem =>
+    Object.values(caseItem).some(value =>
+      value != null && value.toString().toLowerCase().includes(searchQuery.toLowerCase())
+    )
+  );
+
   if (error) {
     return <div>Error: {error}</div>;
   }
@@ -33,8 +40,15 @@ const CaseList = () => {
   return (
     <div className={styles.container}>
       <h1 className={styles.title}>User Cases</h1>
+      <input
+        type="text"
+        placeholder="Search cases..."
+        value={searchQuery}
+        onChange={(e) => setSearchQuery(e.target.value)}
+        className={styles.searchBar}
+      />
       <ul className={styles.list}>
-        {cases.map((caseItem) => (
+        {filteredCases.map((caseItem) => (
           <li key={caseItem.id} className={styles.item}>
             <div className={styles.field}>
               <span className={styles.label}>ID:</span>
