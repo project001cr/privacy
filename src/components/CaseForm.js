@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from 'react';
+import styles from './CaseForm.module.css';
 
 const CaseForm = () => {
   const [formData, setFormData] = useState({
@@ -39,50 +40,56 @@ const CaseForm = () => {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <h1>Add a New Case</h1>
-      <div>
-        <label>User ID:</label>
-        <input
-          type="text"
-          name="userId"
-          value={formData.userId}
-          onChange={handleChange}
-          required
-        />
-      </div>
-      <div>
-        <label>Full Name:</label>
-        <input
-          type="text"
-          name="fullName"
-          value={formData.fullName}
-          onChange={handleChange}
-          required
-        />
-      </div>
-      <div>
-        <label>Email:</label>
-        <input
-          type="email"
-          name="email"
-          value={formData.email}
-          onChange={handleChange}
-          required
-        />
-      </div>
-      <div>
-        <label>Request URL:</label>
-        <input
-          type="url"
-          name="requestUrl"
-          value={formData.requestUrl}
-          onChange={handleChange}
-          required
-        />
-      </div>
-      <button type="submit">Submit</button>
-    </form>
+    <div className={styles.container}>
+      <h1 className={styles.title}>Add a New Case</h1>
+      <form onSubmit={handleSubmit} className={styles.form}>
+        <div>
+          <label className={styles.label}>User ID:</label>
+          <input
+            type="text"
+            name="userId"
+            value={formData.userId}
+            onChange={handleChange}
+            required
+            className={styles.input}
+          />
+        </div>
+        <div>
+          <label className={styles.label}>Full Name:</label>
+          <input
+            type="text"
+            name="fullName"
+            value={formData.fullName}
+            onChange={handleChange}
+            required
+            className={styles.input}
+          />
+        </div>
+        <div>
+          <label className={styles.label}>Email:</label>
+          <input
+            type="email"
+            name="email"
+            value={formData.email}
+            onChange={handleChange}
+            required
+            className={styles.input}
+          />
+        </div>
+        <div>
+          <label className={styles.label}>Request URL:</label>
+          <input
+            type="url"
+            name="requestUrl"
+            value={formData.requestUrl}
+            onChange={handleChange}
+            required
+            className={styles.input}
+          />
+        </div>
+        <button type="submit" className={styles.button}>Submit</button>
+      </form>
+    </div>
   );
 };
 
